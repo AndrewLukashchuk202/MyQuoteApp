@@ -1,0 +1,81 @@
+<h3>Quote Details</h3>
+<hr />
+<div class="card bg-body-tertiary">
+  <div class="card-body">
+    <!-- Quote text -->
+    <blockquote class="blockquote mb-3">
+      <p class="mb-0">"<%= @quote.text %>"</p>
+      <p></p>
+      <% if @quote.publication_year.present? %>
+        <footer class="blockquote-footer">
+          Published in <cite><%= @quote.publication_year %></cite>
+        </footer>
+      <% end %>
+    </blockquote>
+
+    <!-- Author details -->
+    <h5>Author Information</h5>
+    <% if @quote.author.present? %>
+      <p>
+        <strong>Name:</strong>
+        <%= [@quote.author.fname, @quote.author.lname].compact.join(' ') %><br />
+        <% if @quote.author.birth_year.present? %>
+          <strong>Born:</strong> <%= @quote.author.birth_year %>
+        <% end %>
+        <% if @quote.author.death_year.present? %>
+          <strong>Died:</strong> <%= @quote.author.death_year %>
+        <% end %><br />
+        <% if @quote.author.biography.present? %>
+          <strong>Biography:</strong> <%= @quote.author.biography %>
+        <% else %>
+          <em>No biography provided.</em>
+        <% end %>
+      </p>
+    <% else %>
+      <p><em>Author unknown (anonymous)</em></p>
+    <% end %>
+
+    <!-- Categories -->
+    <h5>Categories</h5>
+    <% if @quote.categories.any? %>
+      <ul>
+        <% @quote.categories.each do |category| %>
+          <li><%= category.name %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p><em>No categories assigned.</em></p>
+    <% end %>
+
+    <!-- User info -->
+    <h5>Added By</h5>
+    <% if @quote.user.present? %>
+      <p><%= @quote.user.fname %></p>
+    <% else %>
+      <p><em>Unknown user</em></p>
+    <% end %>
+
+    <!-- User comment -->
+    <% if @quote.user_comment.present? %>
+      <h5>User Comment</h5>
+      <p><%= @quote.user_comment %></p>
+    <% end %>
+
+    <!-- Visibility Status -->
+    <h5>Visibility</h5>
+    <p>
+      <% if @quote.is_public %>
+        <span class="badge bg-success">Public</span>
+      <% else %>
+        <span class="badge bg-secondary">Private</span>
+      <% end %>
+    </p>
+
+    <!-- Navigation -->
+  <div>
+    <%= link_to "Edit this quote", edit_quote_path(@quote) %> |
+    <%= link_to "Back to quotes", quotes_path %>
+    <%= button_to "Destroy this quote", @quote, method: :delete %>
+  </div>
+  </div>
+</div>

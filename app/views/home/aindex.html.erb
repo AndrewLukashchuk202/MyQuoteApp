@@ -1,0 +1,5 @@
+<p style="color: green"><%= notice %></p>
+<p>Hello <%= session[:fname] %></p>
+<h3>Administration Landing Page</h3>
+<p>With great power, comes great responsibility</p>
+<%= link_to "Edit your account details", edit_user_path(session[:user_id]) %>

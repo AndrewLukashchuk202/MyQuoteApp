@@ -1,0 +1,37 @@
+<h1>Welcome to Quote App</h1>
+<p>Be smart! Have a quote!</p>
+<h3>Latest 10 Quotes</h3>
+<hr />
+
+<% @quotes.each do |quote| %>
+  <div class="card bg-body-tertiary mb-3">
+    <div class="card-body">
+      <blockquote class="blockquote">
+        <p><%= quote.text %></p>
+      </blockquote>
+
+      <footer class="blockquote-footer">
+        <% if quote.author.present? %>
+          <strong><%= quote.author.fname %> <%= quote.author.lname %></strong>
+          <% if quote.author.birth_year.present? %>
+            (<%= quote.author.birth_year.year %>
+            <% if quote.author.death_year.present? %>–<%= quote.author.death_year.year %><% end %>)
+          <% end %>
+        <% else %>
+          <em>Anonymous</em>
+        <% end %>
+      </footer>
+
+      <p>Added by: <%= quote.user.fname %></p>
+
+      <% if quote.categories.any? %>
+        <p>
+          Categories:
+          <%= quote.categories.map(&:name).join(', ') %>
+        </p>
+      <% end %>
+
+      <%= link_to "Read full quote", quote_path(quote), class: "btn btn-primary btn-sm mt-2" %>
+    </div>
+  </div>
+<% end %>

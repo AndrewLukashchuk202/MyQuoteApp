@@ -1,0 +1,72 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        
+        <li>
+        <%= link_to 'Home', root_path, class:"nav-link" %>
+        </li>
+
+        <li>
+        <%= link_to 'About Us', about_path, class:"nav-link" %>
+        </li>
+
+        <!-- Sign Up link: -->
+        <% if !logged_in? %>
+          <li class="nav-item">
+          <li><%= link_to 'Sign Up', new_user_path, class:"nav-link" %></li>
+          </li>
+        <% end %>
+
+        <!-- Sign In link: -->
+        <% if !logged_in? %>
+          <li class="nav-item">
+          <li><%= link_to 'Sign In', login_path, class:"nav-link" %></li>
+          </li>
+        <% end %>
+
+        <!-- Sign Out link: -->
+        <% if logged_in? %>
+          <li class="nav-item">
+          <%= button_to "Sign Out", logout_path, method: :delete, class:"btn btn-link nav-link" %>
+          </li>
+        <% end %>
+
+        <li>
+        <a class="nav-link" href="/search">Search</a>
+        </li>
+
+
+        <!-- User Drop Menu: -->
+        <% if logged_in? && !is_administrator? %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              User
+            </a>
+            <ul class="dropdown-menu">
+              <%= link_to "My Account", userhome_path, class:"dropdown-item" %>
+              <%= link_to "My Quotes", your_quotes_path, class:"dropdown-item" %>
+              <li><hr class="dropdown-divider"></li>
+              <!-- <li><a class="dropdown-item" href="#">Add New Quote</a></li> -->
+              <%= link_to "Add New Quote", new_quote_path, class:"dropdown-item" %>
+            </ul>
+          </li>
+        <% end %>
+
+        <!-- Admin Drop Menu: -->
+        <% if logged_in? && is_administrator? %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+            <ul class="dropdown-menu">
+            <%= link_to "Admin Home", admin_path, class:"dropdown-item" %>
+              <li><%= link_to 'Manage Users', users_path, class:"dropdown-item" %></li>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>

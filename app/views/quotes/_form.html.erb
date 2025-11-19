@@ -1,0 +1,112 @@
+<% if @quote.errors.any? %>
+  <div class="alert alert-danger">
+    <h4><%= pluralize(@quote.errors.count, "error") %> prohibited this quote from being saved:</h4>
+    <ul>
+      <% @quote.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with(model: @quote, local: true) do |f| %>
+  <%= f.hidden_field :user_id, value: current_user.id %>
+  
+  <!-- Quote Text (REQUIRED) -->
+  <div class="form-group mb-3">
+    <%= f.label :text, "Quote Text" %>
+    <span class="text-danger">*</span>
+    <%= f.text_area :text, placeholder: "Enter quote text", class: "form-control", required: true %>
+  </div>
+
+  <!-- Public/Private Toggle -->
+  <div class="form-group mb-3">
+    <%= f.label :is_public, "Visibility" %>
+    <div class="form-check">
+      <%= f.radio_button :is_public, true, class: "form-check-input", id: "quote_public" %>
+      <%= f.label :is_public, "Public (visible on home page)", for: "quote_public", class: "form-check-label" %>
+    </div>
+    <div class="form-check">
+      <%= f.radio_button :is_public, false, class: "form-check-input", id: "quote_private" %>
+      <%= f.label :is_public, "Private (only you can see)", for: "quote_private", class: "form-check-label" %>
+    </div>
+  </div>
+
+  <!-- Author Info -->
+  <h5>Author (optional)</h5>
+  <%= f.fields_for :author do |af| %>
+    <div class="row">
+      <div class="col">
+        <%= af.label :fname, "First Name" %>
+        <%= af.text_field :fname, class: "form-control" %>
+      </div>
+      <div class="col">
+        <%= af.label :lname, "Last Name" %>
+        <%= af.text_field :lname, class: "form-control" %>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col">
+        <%= af.label :birth_year, "Birth Year" %>
+        <%= af.date_field :birth_year, class: "form-control" %>
+      </div>
+      <div class="col">
+        <%= af.label :death_year, "Death Year" %>
+        <%= af.date_field :death_year, class: "form-control" %>
+      </div>
+    </div>
+    <div class="mt-2">
+      <%= af.label :biography, "Short Biography" %>
+      <%= af.text_area :biography, rows: 3, class: "form-control" %>
+    </div>
+  <% end %>
+
+  <!-- Publication Year -->
+  <div class="form-group mt-3">
+    <%= f.label :publication_year, "Publication Year (optional)" %>
+    <%= f.date_field :publication_year, class: "form-control" %>
+  </div>
+
+  <!-- Categories -->
+  <h5 class="mt-3">Categories</h5>
+  <div id="categories-container">
+    <%= f.fields_for :quote_categories do |qf| %>
+      <div class="category-field row mb-2">
+        <div class="col-auto">
+          <%= qf.label :category_id, "Category" %>
+          <%= qf.select :category_id, 
+                Category.all.collect { |c| [c.name, c.id] },
+                { include_blank: "Select a category" }, 
+                class: "form-control d-inline-block" %>
+        </div>
+        <div class="col-auto align-self-end">
+          <%= link_to '[-] Remove this category', '#', 
+                class: 'remove-category', 
+                style: "color: red; text-decoration: none;" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- User Comment -->
+  <div class="form-group mt-3">
+    <%= f.label :user_comment, "Your Comment (optional)" %>
+    <%= f.text_area :user_comment, rows: 3, class: "form-control" %>
+  </div>
+
+  <%= f.submit @quote.new_record? ? "Create Quote" : "Update Quote", class: "btn btn-primary btn-lg mt-3" %>
+<% end %>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('click', function(e) {
+    if (e.target && e.target.classList.contains('remove-category')) {
+      e.preventDefault();
+      const categoryFields = document.querySelectorAll('.category-field');
+      if (categoryFields.length > 1) {
+        e.target.closest('.category-field').remove();
+      }
+    }
+  });
+});
+</script>

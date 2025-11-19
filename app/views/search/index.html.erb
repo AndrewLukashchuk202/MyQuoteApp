@@ -1,0 +1,57 @@
+<h3 style="padding-top: 10px;">Search for quotes by categories</h3>
+<%= form_tag search_path, method: :get do %>
+  <div class="form-group" style="padding-bottom: 10px;">
+    <%= text_field_tag :category_query, params[:category_query], placeholder: 'Enter a category', class: "form-control" %>
+  </div>
+
+  <%= submit_tag 'Search Quotes', class: "btn btn-primary" %>
+<% end %>
+
+<!-- The line below checks that the form has been submitted by checking the existence of
+a params[:category_query] object, which will return either true or false; if false, no
+part of the code that follows will be executed -->
+<% if params[:category_query].present? %>
+
+  <!-- The line below checks that quote(s) containing the category were in fact
+  found as indicated by @quotematch.present? returning either true or false; if true,
+  execute the if block of code, and if false, execute the else block of code -->
+  <% if @quotematch.present? %>
+    <h4 style="padding-top: 15px;">Results:</h4>
+
+    <!-- Cycle through each quote returned and print its text, author info and link
+    to the view -->
+    <% @quotematch.each do |quote| %>
+      <div class="card bg-body-tertiary mb-3 p-3">
+        <h5 class="text-primary">"<%= quote.text %>"</h5>
+
+        <% if quote.author.present? %>
+          <p>
+            <strong>Author:</strong>
+            <%= quote.author.fname %> <%= quote.author.lname %>
+            <% if quote.author.birth_year.present? %>
+              (<%= quote.author.birth_year.year %>
+              <% if quote.author.death_year.present? %>
+                – <%= quote.author.death_year.year %>
+              <% end %>)
+            <% end %>
+          </p>
+        <% else %>
+          <p><em>Anonymous</em></p>
+        <% end %>
+
+        <% if quote.publication_year.present? %>
+          <p><strong>Published:</strong> <%= quote.publication_year.year %></p>
+        <% end %>
+
+        <% if quote.user_comment.present? %>
+          <p><em>Comment:</em> <%= quote.user_comment %></p>
+        <% end %>
+
+        <p>[<%= link_to "View Quote", quote_path(quote) %>]</p>
+      </div>
+    <% end %>
+
+  <% else %>
+    <p>No matching quotes found.</p>
+  <% end %>
+<% end %>

@@ -1,160 +1,105 @@
-📚 MyQuote – A Ruby on Rails Quote Collection App
+# 📚 MyQuote – A Ruby on Rails Quote Collection App
 
 A personal quote collection application built using Ruby on Rails.
 Users can create, edit, delete, and view quotes with associated authors, categories, and personal notes.
-The project was developed for academic assessment in the CSI1241 Web Application Development unit.
+The project was developed for academic assessment in the **CSI1241 Web Application Development** unit.
 
-⭐ Features
-🔐 Authentication
+## ⭐ Features:
+### 🔐 Authentication
+- Users must be logged in to create or manage quotes.
+- Each quote belongs to a specific user.
+- Only the owner can edit or delete their quotes.
 
-Users must be logged in to create or manage quotes.
+### 📝 Quote Management (CRUD)
+- Add new quotes with the following:
+- Quote text
+- Author details (first name, last name, birth year, death year, and biography)
+- Publication year
+- Custom user comment
+- One or multiple categories
 
-Each quote belongs to a specific user.
+### 📚 Nested Author Creation
 
-Only the owner can edit or delete their quotes.
+- Quotes allow adding author information directly inside the quote form via accepts_nested_attributes_for.
 
-📝 Quote Management (CRUD)
+### 🏷️ Categories
+- Many-to-many relationship via quote_categories.
+- Users can tag quotes with categories like Inspiration, Philosophy, History, etc.
 
-Add new quotes with the following:
+### 🎨 Bootstrap UI
+- Clean and responsive interface.
+- Simple and easy-to-use layouts.
 
-Quote text
+### 🏗️ Tech Stack
+- Layer	Technology
+- Backend	Ruby on Rails
+- Database	SQLite3
+- Frontend	ERB templates + Bootstrap 5
+- Authentication	Custom session-based system
+- Architecture	MVC
 
-Author details (first name, last name, birth year, death year, and biography)
-
-Publication year
-
-Custom user comment
-
-One or multiple categories
-
-📚 Nested Author Creation
-
-Quotes allow adding author information directly inside the quote form
-via accepts_nested_attributes_for.
-
-🏷️ Categories
-
-Many-to-many relationship via quote_categories.
-
-Users can tag quotes with categories like Inspiration, Philosophy, History, etc.
-
-🎨 Bootstrap UI
-
-Clean and responsive interface.
-
-Simple and easy-to-use layouts.
-
-🏗️ Tech Stack
-Layer	Technology
-Backend	Ruby on Rails
-Database	SQLite3
-Frontend	ERB templates + Bootstrap 5
-Authentication	Custom session-based system
-Architecture	MVC
 🔧 Installation & Setup
 1. Clone the Repository
+```
 git clone https://github.com/<your-username>/myquote.git
 cd myquote
+```
 
 2. Install Dependencies
-bundle install
+```bundle install```
 
 3. Set Up the Database
+```
 rails db:migrate
-rails db:seed   # if you add seeds later
+rails db:seed  # if you add seeds later
+```
 
 4. Start the Server
-rails server
-
+```rails server```
 
 Go to:
 👉 http://localhost:3000
 
-🗂️ Database Models
-User
+## 🗂️ Database Models:
 
-has_many :quotes
+### User
 
-Quote
+- has_many :quotes
 
-belongs_to :user
+### Quote
 
-belongs_to :author
+- belongs_to :user
+- belongs_to :author
+- has_many :quote_categories
+- has_many :categories, through: :quote_categories
 
-has_many :quote_categories
+### Author
+- has_many :quotes
 
-has_many :categories, through: :quote_categories
+### Category
+- has_many :quote_categories
+- has_many :quotes, through: :quote_categories
 
-Author
+### QuoteCategory
+- Join table between quotes and categories
 
-has_many :quotes
+### 🧪 Key Concepts Demonstrated:
+- ✔ MVC architecture
+- ✔ RESTful routing
+- ✔ CRUD operations
+- ✔ Authentication & authorization
+- ✔ Nested forms
+- ✔ ActiveRecord associations
+- ✔ Form validations
+- ✔ Bootstrap layout
+- ✔ Partials & reusable views
 
-Category
+### 🧭 Project Purpose
 
-has_many :quote_categories
-
-has_many :quotes, through: :quote_categories
-
-QuoteCategory
-
-Join table between quotes and categories
-
-📸 Screenshots (Optional Sections)
-
-You can add:
-
-Homepage
-
-New Quote Form
-
-Show Quote Page
-
-Edit Quote Form
-
-Markdown example:
-
-![Screenshot - Quote List](screenshots/quote_list.png)
-
-🧪 Key Concepts Demonstrated
-
-✔ MVC architecture
-✔ RESTful routing
-✔ CRUD operations
-✔ Authentication & authorization
-✔ Nested forms
-✔ ActiveRecord associations
-✔ Form validations
-✔ Bootstrap layout
-✔ Partials & reusable views
-
-🧭 Project Purpose
-
-This application was designed as a practical demonstration of:
-
-Rails MVC principles
-
-Database relationships
-
-Rails form helpers
-
-User authentication
-
-Secure CRUD operations
-
-Web app development workflow
-
-It served as the final prototype for MyQuote in the unit’s assessment.
-
-🗣️ Future Improvements
-
-Edit authors independently
-
-Search bar for quotes or authors
-
-Tags auto-complete
-
-Dark mode
-
-Favourite quotes
-
-API endpoints for mobile app integration
+- This application was designed as a practical demonstration of:
+- Rails MVC principles
+- Database relationships
+- Rails form helpers
+- User authentication
+- Secure CRUD operations
+- Web app development workflow
